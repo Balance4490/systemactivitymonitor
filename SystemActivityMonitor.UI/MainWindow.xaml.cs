@@ -5,7 +5,10 @@ using SystemActivityMonitor.Data;
 using SystemActivityMonitor.Data.Patterns.Iterator;
 using SystemActivityMonitor.Data.Patterns.Command;
 using SystemActivityMonitor.Data.Patterns.AbstractFactory;
+using SystemActivityMonitor.Data.Patterns.Bridge;
 using System.Windows.Controls;
+using System.Collections.Generic;
+using SystemActivityMonitor.Data.Entities;
 
 namespace SystemActivityMonitor.UI
 {
@@ -80,6 +83,37 @@ namespace SystemActivityMonitor.UI
                 }
                 iterator.Next();
             }
+        }
+
+        private void BtnBridgeReport_Click(object sender, RoutedEventArgs e)
+        {
+            List<ResourceLog> logs;
+
+            using (var db = new MonitorDbContext())
+            {
+                logs = db.ResourceLogs.OrderByDescending(l => l.CreatedAt).Take(10).ToList();
+            }
+
+            if (logs.Count == 0)
+            {
+                MessageBox.Show("Немає даних для звіту! Спочатку згенеруйте їх.");
+                return;
+            }
+
+            if (cmbReportFormat.SelectedItem == null)
+            {
+                MessageBox.Show("Будь ласка, виберіть формат звіту.");
+                return;
+            }
+
+            IReportRenderer renderer = cmbReportFormat.SelectedIndex == 0
+                ? new PlainTextRenderer()
+                : new HtmlRenderer();
+
+            ReportAbstraction report = new DailyReport(renderer);
+            string result = report.Generate(logs);
+
+            MessageBox.Show(result, "Попередній перегляд звіту");
         }
     }
 }
