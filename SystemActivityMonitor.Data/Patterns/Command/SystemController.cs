@@ -37,6 +37,7 @@ namespace SystemActivityMonitor.Data.Patterns.Command
                 db.SaveChanges();
 
                 var rnd = new Random();
+                string[] windows = { "Google Chrome", "Visual Studio", "Google Chrome", "Telegram", "Word" };
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -45,6 +46,7 @@ namespace SystemActivityMonitor.Data.Patterns.Command
                         SessionId = session.Id,
                         CpuLoad = cpuSensor.GetCpuLoad(),
                         RamUsage = ramSensor.GetFreeRam(),
+                        ActiveWindow = windows[rnd.Next(windows.Length)],
                         CreatedAt = DateTime.UtcNow.AddSeconds(i * 2)
                     });
                 }

@@ -3,7 +3,6 @@ using SystemActivityMonitor.Data.Entities;
 
 namespace SystemActivityMonitor.Data.Patterns.Iterator
 {
-    // ConcreteAggregate
     public class LogCollection : IAggregate
     {
         private List<ResourceLog> _items = new List<ResourceLog>();

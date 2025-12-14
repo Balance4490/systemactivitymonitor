@@ -97,7 +97,7 @@ namespace SystemActivityMonitor.UI
             var elements = new List<IMetricElement>();
             foreach (var log in logs)
             {
-                elements.Add(new CpuMetric(log.CpuLoad, log.CreatedAt.ToShortTimeString()));
+                elements.Add(new CpuMetric(log.CpuLoad, log.CreatedAt.ToShortTimeString(), log.ActiveWindow, log.IsSystemIdle));
                 elements.Add(new RamMetric(log.RamUsage));
             }
 
@@ -152,7 +152,7 @@ namespace SystemActivityMonitor.UI
 
                 foreach (var log in logs)
                 {
-                    elements.Add(new CpuMetric(log.CpuLoad, log.CreatedAt.ToShortTimeString()));
+                    elements.Add(new CpuMetric(log.CpuLoad, log.CreatedAt.ToShortTimeString(), log.ActiveWindow, log.IsSystemIdle));
                     elements.Add(new RamMetric(log.RamUsage));
                 }
             }
